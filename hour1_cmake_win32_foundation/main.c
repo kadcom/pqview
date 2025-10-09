@@ -160,7 +160,7 @@ void TestPostgreSQLConnection(HWND hwnd)
     if (PQstatus(conn) != CONNECTION_OK)
     {
         /* Connection failed */
-        sprintf_s(errorMsg, sizeof(errorMsg),
+        snprintf(errorMsg, sizeof(errorMsg),
             "PostgreSQL Connection Failed!\n\n"
             "Error: %s\n\n"
             "Please check:\n"
@@ -181,7 +181,7 @@ void TestPostgreSQLConnection(HWND hwnd)
     if (PQresultStatus(res) == PGRES_TUPLES_OK && PQntuples(res) > 0)
     {
         version = PQgetvalue(res, 0, 0);
-        sprintf_s(successMsg, sizeof(successMsg),
+        snprintf(successMsg, sizeof(successMsg),
             "PostgreSQL Connection Successful!\n\n"
             "Server Version:\n%s",
             version);
