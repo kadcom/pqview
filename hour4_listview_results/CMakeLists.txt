@@ -67,6 +67,11 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32_LEAN_AND_MEAN)
 # MSVC specific settings
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+
+    # Embed manifest for Common Controls v6 (XP+ themes)
+    target_link_options(${PROJECT_NAME} PRIVATE
+        "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'"
+    )
 endif()
 
 # List of required PostgreSQL DLLs
