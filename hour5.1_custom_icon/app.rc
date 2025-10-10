@@ -1,0 +1,7 @@
+// Application resources
+#include <windows.h>
+
+// Application icon
+#define IDI_PQVIEW 101
+
+IDI_PQVIEW ICON "db.ico"

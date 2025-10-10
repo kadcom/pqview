@@ -4,24 +4,68 @@ A simple PostgreSQL SELECT query client built from scratch using CMake, Win32 AP
 
 ## Stream Schedule (4-5 Hours)
 
+### Hour 0: Basic Window
+**Directory:** `hour0_basic_window/`
+- Basic Win32 window with WinMain
+- No PostgreSQL dependency
+- Just Windows API (user32, gdi32)
+- Foundation for adding features
+
 ### Hour 1: CMake + Win32 Foundation
 **Directory:** `hour1_cmake_win32_foundation/`
 - Set up CMake project structure
 - Configure Win32 application
-- Link PostgreSQL libpq library
-- Create basic window with WinMain
-- Test compilation and window creation
+- Link PostgreSQL libpq library using find_package
+- Test connection on startup
+- Display version in MessageBox
+
+### Hour 1.1: Relative Path Configuration
+**Directory:** `hour1.1_relative_path/`
+- Replace find_package with manual library paths
+- Use PostgreSQL_ROOT for flexibility
+- Manual find_library() approach
+- Better control over library locations
+
+### Hour 1.3: DLL Deployment
+**Directory:** `hour1.3_dll_deployment/`
+- Automated DLL copying with CMake POST_BUILD
+- Copy libpq.dll and dependencies to output directory
+- Single distributable executable folder
 
 ### Hour 2: Connection UI + Debug Window
 **Directory:** `hour2_connection_debug/`
 - Add connection parameter controls (Host, Port, User, Password, Database)
 - Implement Connect button functionality
-- Create scrollable debug output window
+- Create scrollable EDIT debug output window
 - Test PostgreSQL connection
-- Display connection status in debug window
+- Display connection status
+- **Note:** Has text rendering issues when scrolling
+
+### Hour 2.1: Modern UI (Windows 95 Style)
+**Directory:** `hour2.1_modern_ui/`
+- **CRITICAL FIX:** Switch from EDIT to LISTBOX for debug output
+- Fixes text rendering/overlap issues from Hour 2
+- Add MS Shell Dlg font (8pt), Courier New monospace
+- Group boxes for organization
+- COLOR_BTNFACE background (gray dialog)
+- WM_CTLCOLORSTATIC for transparent labels
+- 3D borders with WS_EX_WINDOWEDGE and WS_EX_CLIENTEDGE
+- Move Connect button outside group box
+- Add tab order support
+
+### Hour 2.2: Windows XP+ Themes
+**Directory:** `hour2.2_xp_themes/`
+- Embedded manifest for Common Controls v6
+- InitCommonControlsEx() initialization
+- Segoe UI font (Vista+) with fallback to Tahoma (XP)
+- Consolas monospace font with fallback to Courier New
+- CLEARTYPE_QUALITY for anti-aliased text
+- Themed controls (gradient buttons, blue focus rectangles)
+- Same layout as Hour 2.1, just modern visual styles
+- Compatible with Windows XP through Windows 11
 
 ### Hour 3: Query Execution
-**Directory:** `hour3_query_execution/`
+**Directory:** `hour3_query_execution/` *(TODO)*
 - Add multi-line query input control
 - Implement Execute button
 - Execute SELECT queries using libpq
@@ -29,7 +73,7 @@ A simple PostgreSQL SELECT query client built from scratch using CMake, Win32 AP
 - Error handling and messages
 
 ### Hour 4: ListView Results
-**Directory:** `hour4_listview_results/`
+**Directory:** `hour4_listview_results/` *(TODO)*
 - Create ListView control (LVS_REPORT mode)
 - Dynamically add column headers from query results
 - Populate rows with data
@@ -37,11 +81,11 @@ A simple PostgreSQL SELECT query client built from scratch using CMake, Win32 AP
 - Clear and refresh ListView
 
 ### Hour 5: Polish & Features
-**Directory:** `hour5_polish_features/`
+**Directory:** `hour5_polish_features/` *(TODO)*
 - Handle NULL values display
 - Better error messages
 - Column auto-sizing
-- Timestamps in debug output
+- Timestamps in debug output (already in Hour 2.1+)
 - Row/execution statistics
 - Final testing and demo
 
@@ -112,15 +156,20 @@ See `sample_queries.sql` for ready-to-use queries organized by complexity:
 
 ```
 pq/
-├── hour1_cmake_win32_foundation/
-├── hour2_connection_debug/
-├── hour3_query_execution/
-├── hour4_listview_results/
-├── hour5_polish_features/
-├── init_database.sql          # Database setup script
-├── sample_queries.sql         # Test queries
-├── Claude.md                  # This file
-└── README.md                  # Project documentation
+├── hour0_basic_window/               # Basic Win32 window (no PostgreSQL)
+├── hour1_cmake_win32_foundation/     # PostgreSQL connection test
+├── hour1.1_relative_path/            # Manual library paths (no find_package)
+├── hour1.3_dll_deployment/           # Automated DLL copying
+├── hour2_connection_debug/           # Connection UI + EDIT debug window
+├── hour2.1_modern_ui/                # Windows 95 style + LISTBOX (fixes rendering)
+├── hour2.2_xp_themes/                # Windows XP+ visual styles
+├── hour3_query_execution/            # (TODO) Query input and execution
+├── hour4_listview_results/           # (TODO) ListView results display
+├── hour5_polish_features/            # (TODO) Polish and features
+├── init_database.sql                 # Database setup script
+├── sample_queries.sql                # Test queries
+├── Claude.md                         # This file
+└── README.md                         # Project documentation
 ```
 
 ## Application Layout
