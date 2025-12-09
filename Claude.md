@@ -1,8 +1,52 @@
-# PostgreSQL Query Client - Stream Project
+# CLAUDE.md
 
-A simple PostgreSQL SELECT query client built from scratch using CMake, Win32 API, and libpq.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Stream Schedule (4-5 Hours)
+## Project Overview
+
+pqview is a PostgreSQL SELECT query client built from scratch using CMake, Win32 API, and libpq. The project is organized as progressive "hour" directories, each building on the previous one.
+
+**Current/Latest versions:**
+- `hour5.2_modular/` - Modular architecture for PostgreSQL 17 (modern)
+- `hour6_pg93_backport/` - PostgreSQL 9.3 / Windows XP compatible
+
+## Build Commands
+
+```bash
+# Build any hour directory
+cd hour5.2_modular  # or hour6_pg93_backport
+mkdir build && cd build
+cmake .. -DPostgreSQL_ROOT="C:/Program Files/PostgreSQL/17"  # or 9.3
+cmake --build .
+
+# Run
+./Debug/pqview.exe
+```
+
+## Architecture (hour5.2_modular / hour6_pg93_backport)
+
+| Module | Purpose |
+|--------|---------|
+| `main.c` | Entry point, window procedure, message handling |
+| `constants.h` | Control IDs, window dimensions, resource IDs |
+| `controls.c/h` | UI control creation, layout, resize handling |
+| `database.c/h` | PostgreSQL connection and query execution via libpq |
+| `debuglog.c/h` | Timestamped debug logging to listbox |
+| `clipboard.c/h` | Copy selected ListView rows to clipboard |
+
+### Key Patterns
+- **Virtual ListView**: Uses `LVS_OWNERDATA` - data fetched on-demand via `LVN_GETDISPINFO`
+- **Keyboard shortcuts**: F5 (execute), Ctrl+L (clear), Ctrl+C (copy)
+
+## PostgreSQL Version Differences
+
+| Feature | hour5.2 (PG 17) | hour6 (PG 9.3) |
+|---------|-----------------|----------------|
+| SSL DLLs | `libssl-3-x64.dll`, `libcrypto-3-x64.dll` | `ssleay32.dll`, `libeay32.dll` |
+| intl DLL | `libintl-9.dll` | `libintl-8.dll` |
+| libpq API | Same | Same (all functions compatible) |
+
+## Hour Directory Summary
 
 ### Hour 0: Basic Window
 **Directory:** `hour0_basic_window/`
@@ -81,13 +125,29 @@ A simple PostgreSQL SELECT query client built from scratch using CMake, Win32 AP
 - Clear and refresh ListView
 
 ### Hour 5: Polish & Features
-**Directory:** `hour5_polish_features/` *(TODO)*
+**Directory:** `hour5_polish_features/`
 - Handle NULL values display
 - Better error messages
 - Column auto-sizing
 - Timestamps in debug output (already in Hour 2.1+)
 - Row/execution statistics
-- Final testing and demo
+
+### Hour 5.1: Custom Icon
+**Directory:** `hour5.1_custom_icon/`
+- Custom application icon via resource file
+- All Hour 5 features
+
+### Hour 5.2: Modular Architecture
+**Directory:** `hour5.2_modular/`
+- Refactored into separate modules (database, controls, clipboard, debuglog)
+- Clean separation of concerns
+- **Current recommended starting point for new features**
+
+### Hour 6: PostgreSQL 9.3 Backport
+**Directory:** `hour6_pg93_backport/`
+- Backport of hour5.2 for PostgreSQL 9.3 / Windows XP
+- Different DLL names (OpenSSL 1.0.x legacy naming)
+- No C code changes - only CMakeLists.txt differences
 
 ## Database Setup
 
